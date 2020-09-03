@@ -13,7 +13,8 @@ function filter() {
     if (text.length > 2) {
         // Talk to the server, send it a request with a parameter
         let xhr = new XMLHttpRequest();
-        xhr.open("GET", `http://localhost:6969/automagical/${text}`);
+        let url = window.location.href;
+        xhr.open("GET", `${url}automagical/${text}`);
         xhr.send();
         // When it gets back
         xhr.onreadystatechange = () => {
