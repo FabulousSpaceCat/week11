@@ -1,9 +1,0 @@
-<!-- If results are present, populate container -->
-<% locals.matches.forEach(element => { %>
-    <p>id: <%= element.id  %> </p>
-    <p>name: <%= element.name  %> </p>
-    <% if (element.state != "") { %>
-        <p>state: <%= element.state  %> </p>
-    <% } %>
-    <p>country: <%= element.country  %> </p>
-<% }) %>

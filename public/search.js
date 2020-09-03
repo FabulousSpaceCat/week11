@@ -59,7 +59,6 @@ function set(link) {
     document.getElementById("count").innerHTML = "";
 }
 
-// 
 
 
 

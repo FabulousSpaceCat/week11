@@ -1,14 +1,17 @@
 // Set up my toolbag
 const express = require("express");
 const bodyParser  = require("body-parser");
+const request = require("request");
 const app = express();
 app.set("view engine", "ejs");
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(__dirname + "/public"));
+
 
 // Throw in my dataset and api key
 const data = require("./city.list.json");
-const key = require("./private/apikey.txt")
+const apikey = require("./private/apikey.json");
+const key = apikey.key;
 
 // Build the homepage
 app.get("/", (req, res) => {
@@ -29,15 +32,35 @@ app.get("/automagical/:text", (req, res) => {
 
 // Weather search
 app.post("/search", (req,res) =>{
-    // Get value of location, index has been chosen already
-    let index = req.body.refIndex;
-    // Assign to variable
-    let location = data[index].id;
-    // Build the query
-    // Res.render weather inside the query block so rendering doesn't happen until async call is complete
+    // Assign city id from hidden field
+    let id = req.body.refIndex;
+    // Build URL
+    let url = `http://api.openweathermap.org/data/2.5/weather?id=${id}&units=imperial&appid=${key}`
+    // Let's talk to OpenWeatherMap
+    request(url, function (err, response, body) {
+        if(err){
+            res.render("home", { error });
+        } else {
+            let responseData = JSON.parse(body);
+            console.log(responseData);
+            res.render("weather", { responseData });
+        }
+    });
 });
 
-// Error pages
+// Error pages (just a token attempt for the two most common) 
+// I should probably just make a block of these and an error page view
+// And copy them into future projects forever
+
+// 404
+app.use((req, res) => {
+    res.status(404).send("404: Page not Found");
+});
+
+// 500
+app.use((req, res) => {
+    res.status(500).send("500: Internal Server Error");
+});
 
 // And we're running
 app.listen(6969, () => {
