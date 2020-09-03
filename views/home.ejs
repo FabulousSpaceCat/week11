@@ -3,22 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OWM</title>
+    <link rel="stylesheet" href="w3.css">
+    <link rel="stylesheet" href="owm.css">
+    <script src="search.js" defer></script>
+    <title>OpenWeatherMap Sample Project</title>
 </head>
 <body>
 
-<main>
+<main style="w3-center">
 <div id="welcome">
-    <h1>OpenWeatherMap sample</h1>
-    <p>This is a sample project to play with OpenWeatherMap's API.</p>
+    <h1>OpenWeatherMap Sample Project</h1>
+    <p>This is where I get to play with OpenWeatherMap's API.</p>
 </div>
-<div id="form">
-    <form method="POST" action="/play">
-        <label for="user"><h3>So, uh, where are you?</h3>
-        <p><input name="user" id="user" type="text" maxlength="20"></p></label>
-        <p><button name="Submit" type="submit" value="Submit">Check your weather</button></p>
+
+<div id="container">
+    <form method="POST" action="/search">
+        <label for="location">
+            <h3>So, uh, what city are you in?</h3>
+            <p>There are <%= length %> cities indexed.</p>
+            <p>
+                <input name="location" id="location" type="text" size="20" maxlength="50" placeholder="Search..." onkeyup="filter()"> </label>
+                <button name="Submit" id="Submit" type="submit" value="Submit" disabled>Check your weather</button>
+            </p>
+
+        <input name="refIndex" id="refIndex" type="hidden">
+        <div id="suggestions">
+
+        </div>
     </form>
 </div>
+
 </main>
 
 </body>
