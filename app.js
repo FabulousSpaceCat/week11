@@ -20,14 +20,27 @@ app.get("/", (req, res) => {
 });
 
 // Filter the list with a param
+// Set up for figuring out how to double filter for state and country
 app.get("/automagical/:text", (req, res) => {
-    let search = req.params.text;
-    let matches = data.filter(city => {
-        const regex = new RegExp(`^${search}`, "gi");
-        return city.name.match(regex);
+    // Get the search term
+    let text = req.params.text;
+    // Split on commas, trim excess spaces, push it into an array
+    let search = text.split(",").map(item => {
+        return item.trim();
     });
-    res.setHeader('content-type', 'application/json');
-    res.send(matches);
+    // If only the city name
+    //if (search.length === 1) {
+        // Filter the array for city
+        let matches = data.filter(item => {
+            // By the first entry in the search array
+            // starts with search term, case insensitive
+            const regex = new RegExp(`^${search[0]}`, "gi");
+            return item.name.match(regex);
+        });
+        //Set the header and send the info back
+        res.setHeader("content-type", "application/json");
+        res.send(matches);
+    //}
 });
 
 // Weather search
@@ -42,7 +55,6 @@ app.post("/search", (req,res) =>{
             res.render("home", { error });
         } else {
             let responseData = JSON.parse(body);
-            console.log(responseData);
             res.render("weather", { responseData });
         }
     });
